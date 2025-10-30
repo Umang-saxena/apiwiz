@@ -5,7 +5,7 @@ export type NodeType = "object" | "array" | "primitive";
 
 export interface NodeData {
     label: string;
-    value?: any;
+    value?: unknown;
     type: NodeType;
     path: string;
     isHighlighted?: boolean;
@@ -33,7 +33,7 @@ export const TreeNode = memo(({ data }: { data: NodeData }) => {
         }
     };
 
-    const formatValue = (value: any) => {
+    const formatValue = (value: unknown) => {
         if (value === null) return "null";
         if (typeof value === "string") return `"${value}"`;
         if (typeof value === "boolean") return value ? "true" : "false";
@@ -46,13 +46,13 @@ export const TreeNode = memo(({ data }: { data: NodeData }) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <Handle type="target" position={Position.Top} className="!bg-gray-400 !w-2 !h-2" />
+            <Handle type="target" position={Position.Top} className="bg-gray-400! w-2! h-2!" />
 
             <div className="text-sm">
                 {data.value !== undefined ? String(data.value) : data.label}
             </div>
 
-            <Handle type="source" position={Position.Bottom} className="!bg-gray-400 !w-2 !h-2" />
+            <Handle type="source" position={Position.Bottom} className="bg-gray-400! w-2! h-2!" />
 
             {isHovered && (
                 <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-md shadow-lg z-10 whitespace-nowrap">

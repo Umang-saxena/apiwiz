@@ -6,9 +6,8 @@ import ReactFlow, {
     Background,
     useNodesState,
     useEdgesState,
-    MarkerType,
     Panel,
-    useReactFlow,
+    ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { TreeNode, NodeType } from "./TreeNode";
@@ -17,22 +16,22 @@ import { ZoomIn, ZoomOut, Maximize, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TreeVisualizationProps {
-    data: any;
+    data: unknown;
 }
 
 const nodeTypes = {
     custom: TreeNode,
 };
 
-const buildTree = (data: any, path: string = "$"): { nodes: Node[]; edges: Edge[] } => {
+const buildTree = (data: unknown, path: string = "$"): { nodes: Node[]; edges: Edge[] } => {
     const nodes: Node[] = [];
     const edges: Edge[] = [];
     let nodeId = 0;
 
-    const traverse = (obj: any, currentPath: string, parentId: string | null, xOffset: number, yOffset: number): number => {
+    const traverse = (obj: unknown, currentPath: string, parentId: string | null, xOffset: number, yOffset: number): number => {
         const id = `node-${nodeId++}`;
         let nodeType: NodeType = "primitive";
-        let label = currentPath.split(/[.[\]]/).filter(Boolean).pop() || "root";
+        const label = currentPath.split(/[.[\]]/).filter(Boolean).pop() || "root";
         let value = obj;
 
         if (obj !== null && typeof obj === "object") {
@@ -105,7 +104,7 @@ export const TreeVisualization = ({ data }: TreeVisualizationProps) => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [matchFound, setMatchFound] = useState<boolean | null>(null);
-    const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
+    const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
 
     useEffect(() => {
         const { nodes: newNodes, edges: newEdges } = buildTree(data);

@@ -4,7 +4,7 @@ import { Code2 } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-linear-to-br from-background to-muted/20">
       <div className="container mx-auto p-6">
         <header className="mb-8 text-center relative">
           <div className="absolute top-0 right-0">

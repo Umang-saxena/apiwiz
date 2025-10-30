@@ -50,8 +50,8 @@ export const JsonInput = ({ onVisualize, onReset }: JsonInputProps) => {
         try {
             await navigator.clipboard.writeText(jsonText);
             toast.success("JSON copied to clipboard!");
-        } catch (e) {
-            toast.error("Failed to copy JSON");
+        } catch (e:any) {
+            toast.error("Failed to copy JSON",e.message);
         }
     };
 
