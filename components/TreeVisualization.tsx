@@ -8,11 +8,12 @@ import ReactFlow, {
     useEdgesState,
     MarkerType,
     Panel,
+    useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { TreeNode, NodeType } from "./TreeNode";
 import { SearchBar } from "./SearchBar";
-import { ZoomIn, ZoomOut, Maximize } from "lucide-react";
+import { ZoomIn, ZoomOut, Maximize, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface TreeVisualizationProps {
@@ -158,6 +159,52 @@ export const TreeVisualization = ({ data }: TreeVisualizationProps) => {
     const handleZoomOut = () => reactFlowInstance?.zoomOut();
     const handleFitView = () => reactFlowInstance?.fitView({ padding: 0.2, duration: 800 });
 
+    const handleDownloadImage = useCallback(async () => {
+        if (!reactFlowInstance) return;
+
+        try {
+            // Save current viewport state
+            const currentViewport = reactFlowInstance.getViewport();
+
+            // Temporarily fit view to show entire tree
+            reactFlowInstance.fitView({ padding: 0.1, includeHiddenNodes: true, minZoom: 0.1, maxZoom: 1 });
+
+            // Wait for the view to update
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Use ReactFlow's built-in export functionality
+            const { toBlob } = await import('html-to-image');
+            const element = document.querySelector('.react-flow__viewport') as HTMLElement;
+            if (!element) {
+                // Restore viewport if element not found
+                reactFlowInstance.setViewport(currentViewport);
+                return;
+            }
+
+            const blob = await toBlob(element, {
+                backgroundColor: '#ffffff',
+                quality: 1,
+                pixelRatio: 2,
+            });
+
+            // Restore original viewport
+            reactFlowInstance.setViewport(currentViewport);
+
+            if (!blob) return;
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'json-tree-visualization.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Failed to download image:', error);
+        }
+    }, [reactFlowInstance]);
+
     return (
         <div className="flex flex-col h-full gap-4">
             <SearchBar onSearch={handleSearch} onClear={handleClearSearch} matchFound={matchFound} />
@@ -184,6 +231,9 @@ export const TreeVisualization = ({ data }: TreeVisualizationProps) => {
                     <Controls showInteractive={false} />
 
                     <Panel position="top-right" className="flex gap-2">
+                        <Button onClick={handleDownloadImage} size="icon" variant="secondary" title="Download as Image">
+                            <Download className="w-4 h-4" />
+                        </Button>
                         <Button onClick={handleZoomIn} size="icon" variant="secondary">
                             <ZoomIn className="w-4 h-4" />
                         </Button>
