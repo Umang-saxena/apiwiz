@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Play, FileJson, Copy } from "lucide-react";
+import { Play, FileJson, Copy, RotateCcw } from "lucide-react";
 
 interface JsonInputProps {
     onVisualize: (data: any) => void;
+    onReset?: () => void;
 }
 
 const sampleJson = {
@@ -28,7 +29,7 @@ const sampleJson = {
     count: 42
 };
 
-export const JsonInput = ({ onVisualize }: JsonInputProps) => {
+export const JsonInput = ({ onVisualize, onReset }: JsonInputProps) => {
     const [jsonText, setJsonText] = useState(JSON.stringify(sampleJson, null, 2));
     const [error, setError] = useState<string>("");
 
@@ -52,6 +53,13 @@ export const JsonInput = ({ onVisualize }: JsonInputProps) => {
         } catch (e) {
             toast.error("Failed to copy JSON");
         }
+    };
+
+    const handleReset = () => {
+        setJsonText("");
+        setError("");
+        onReset?.();
+        toast.success("Reset complete!");
     };
 
     return (
@@ -79,10 +87,16 @@ export const JsonInput = ({ onVisualize }: JsonInputProps) => {
                 </div>
             )}
 
-            <Button onClick={handleVisualize} className="w-full" size="lg">
-                <Play className="w-4 h-4 mr-2" />
-                Visualize Tree
-            </Button>
+            <div className="flex gap-2">
+                <Button onClick={handleReset} variant="outline" className="flex-1" size="lg">
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Reset
+                </Button>
+                <Button onClick={handleVisualize} className="flex-1" size="lg">
+                    <Play className="w-4 h-4 mr-2" />
+                    Visualize Tree
+                </Button>
+            </div>
         </div>
     );
 };

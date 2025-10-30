@@ -9,10 +9,14 @@ import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 const JsonVisualizer = () => {
   const [jsonData, setJsonData] = useState<unknown>(null);
 
+  const handleReset = () => {
+    setJsonData(null);
+  };
+
   return (
     <PanelGroup direction="horizontal" className="h-[calc(100vh-200px)]">
       <Panel defaultSize={50} minSize={30}>
-        <JsonInput onVisualize={setJsonData} />
+        <JsonInput onVisualize={setJsonData} onReset={handleReset} />
       </Panel>
       <PanelResizeHandle className="w-2 bg-border hover:bg-primary/20 transition-colors" />
       <Panel defaultSize={50} minSize={30}>
