@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Play, FileJson } from "lucide-react";
+import { Play, FileJson, Copy } from "lucide-react";
 
 interface JsonInputProps {
     onVisualize: (data: any) => void;
@@ -45,11 +45,25 @@ export const JsonInput = ({ onVisualize }: JsonInputProps) => {
         }
     };
 
+    const handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(jsonText);
+            toast.success("JSON copied to clipboard!");
+        } catch (e) {
+            toast.error("Failed to copy JSON");
+        }
+    };
+
     return (
         <div className="flex flex-col h-full gap-4 p-6 bg-card rounded-lg shadow-subtle border border-border">
-            <div className="flex items-center gap-2">
-                <FileJson className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">JSON Input</h2>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <FileJson className="w-5 h-5 text-primary" />
+                    <h2 className="text-lg font-semibold text-foreground">JSON Input</h2>
+                </div>
+                <Button onClick={handleCopy} variant="outline" size="sm">
+                    <Copy className="w-4 h-4" />
+                </Button>
             </div>
 
             <Textarea
