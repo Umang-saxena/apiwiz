@@ -1,11 +1,15 @@
 import JsonVisualizer from "@/components/JsonVisualizer";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Code2 } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-bg">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
       <div className="container mx-auto p-6">
-        <header className="mb-8 text-center">
+        <header className="mb-8 text-center relative">
+          <div className="absolute top-0 right-0">
+            <ThemeToggle />
+          </div>
           <div className="flex items-center justify-center gap-3 mb-2">
             <Code2 className="w-8 h-8 text-primary" />
             <h1 className="text-4xl font-bold text-foreground">JSON Tree Visualizer</h1>
