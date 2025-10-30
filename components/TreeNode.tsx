@@ -16,7 +16,7 @@ export const TreeNode = memo(({ data }: { data: NodeData }) => {
         const baseStyle = "px-6 py-3 rounded-lg shadow-md transition-all duration-300 min-w-[100px] text-center font-medium";
 
         if (data.isHighlighted) {
-            return `${baseStyle} bg-primary border-2 border-primary text-white ring-4 ring-primary/30`;
+            return `${baseStyle} bg-primary border-2 border-primary text-white ring-4 ring-primary/30 animate-pulse`;
         }
 
         switch (data.type) {

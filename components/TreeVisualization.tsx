@@ -131,7 +131,7 @@ export const TreeVisualization = ({ data }: TreeVisualizationProps) => {
                 reactFlowInstance.setCenter(
                     matchedNode.position.x + 100,
                     matchedNode.position.y + 50,
-                    { zoom: 1, duration: 800 }
+                    { zoom: 1.5, duration: 800 }
                 );
             }
 
